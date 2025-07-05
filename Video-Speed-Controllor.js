@@ -8,6 +8,43 @@
 // ==/UserScript==
 
 (function () {
+    const showOverlay = (rate) => {
+    const video = document.querySelector('video');
+    if (!video) return;
+
+    let overlay = video.parentElement.querySelector('.vsc-rate-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'vsc-rate-overlay';
+        overlay.style.position = 'absolute';
+        overlay.style.top = '50%';
+        overlay.style.left = '50%';
+        overlay.style.transform = 'translate(-50%, -50%)';
+        overlay.style.background = 'rgba(0, 0, 0, 0.6)';
+        overlay.style.color = 'white';
+        overlay.style.fontSize = '32px';
+        overlay.style.padding = '10px 20px';
+        overlay.style.borderRadius = '8px';
+        overlay.style.pointerEvents = 'none';
+        overlay.style.zIndex = '99999';
+        overlay.style.transition = 'opacity 0.3s ease';
+        overlay.style.opacity = '0';
+
+        // 让 overlay 挂在 video 的父元素（video 一般是 relative 的）
+        const parent = video.parentElement;
+        parent.style.position = 'relative';
+        parent.appendChild(overlay);
+    }
+
+    overlay.textContent = `${rate.toFixed(1)}x`;
+    overlay.style.opacity = '1';
+
+    clearTimeout(overlay._hideTimeout);
+    overlay._hideTimeout = setTimeout(() => {
+        overlay.style.opacity = '0';
+    }, 1000);
+};
+
     'use strict';
 
     let uiCreated = false;
@@ -50,14 +87,20 @@
             case '[':
                 video.playbackRate = Math.max(0.1, video.playbackRate - 0.1);
                 updateUI(video.playbackRate);
+                showOverlay(video.playbackRate);
+                console.log('[VSC] Playback rate decreased:', video.playbackRate);
                 break;
             case ']':
                 video.playbackRate = Math.min(16, video.playbackRate + 0.1);
                 updateUI(video.playbackRate);
+                showOverlay(video.playbackRate);
+                console.log('[VSC] Playback rate increased:', video.playbackRate);
                 break;
             case '\\':
                 video.playbackRate = 1.0;
                 updateUI(video.playbackRate);
+                showOverlay(video.playbackRate);
+                console.log('[VSC] Playback rate reset to 1.0');
                 break;
         }
     });
@@ -121,6 +164,7 @@
                 video.playbackRate = rate;
                 label.textContent = rate.toFixed(1) + 'x';
                 slider.value = rate.toFixed(1);
+                showOverlay(rate);
             }
         };
 
