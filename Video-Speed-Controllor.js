@@ -14,7 +14,7 @@
 
     const patchVideo = (video) => {
         if (video.dataset.vscUnlocked) return;
-        video.removeAttribute('disableplaybackrate');
+        video.removeAttribute('disableremoteplayback');
         video.removeAttribute('controlsList');
         video.dataset.vscUnlocked = 'true';
         console.log('[VSC] Video unlocked:', video);

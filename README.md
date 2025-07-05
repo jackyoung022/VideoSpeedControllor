@@ -6,7 +6,7 @@
 
 ## ✨ 功能特色
 
-- 🚫 **解除限制**：移除 `<video>` 标签中的 `disableplaybackrate` 和 `controlsList` 限制；
+- 🚫 **解除限制**：移除 `<video>` 标签中的 `disableremoteplayback` 和 `controlsList` 限制；
 - 🎛️ **控制面板**：右下角显示一个播放速度控制条（加速、减速、重置、滑块）；
 - ⌨️ **快捷键控制**：支持全局快捷键进行播放速度调节；
 - 🔍 **自动检测**：仅在页面存在 `<video>` 元素时自动显示 UI；
